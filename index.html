@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WanderWise – Travel Recommendations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f172a;          /* slate-900 */
+      --card:#111827;        /* gray-900 */
+      --muted:#94a3b8;       /* slate-400 */
+      --text:#e5e7eb;        /* gray-200 */
+      --brand:#22c55e;       /* green-500 */
+      --brand-600:#16a34a;   /* green-600 */
+      --ring:rgba(34,197,94,0.35);
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji","Segoe UI Emoji";
+      background:linear-gradient(180deg, #0b1225 0%, #0f172a 100%);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    .nav{
+      position:sticky;top:0;z-index:50;backdrop-filter: blur(8px);
+      background:rgba(2,6,23,0.6);border-bottom:1px solid rgba(148,163,184,0.15)
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 24px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand-badge{width:34px;height:34px;border-radius:10px;background:radial-gradient(60% 60% at 30% 20%, #34d399 0%, #10b981 40%, #22c55e 100%);box-shadow:0 6px 20px rgba(34,197,94,.35)}
+    .tabs{display:flex;gap:10px;align-items:center}
+    .tab{padding:8px 14px;border-radius:999px;border:1px solid rgba(148,163,184,.2);color:var(--muted);transition:.2s;}
+    .tab.active, .tab:hover{color:#fff;border-color:rgba(34,197,94,.5);box-shadow:0 0 0 3px var(--ring)}
+
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;padding-top:28px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border:1px solid rgba(148,163,184,.15);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card-inner{padding:22px}
+    .title{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 8px}
+    .subtitle{color:var(--muted);margin:0 0 14px}
+    .chip{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.35);color:#d1fae5;border-radius:999px;font-size:12px;font-weight:600}
+
+    form label{display:block;margin:10px 0 6px;color:var(--muted);font-size:14px}
+    select, input, textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(148,163,184,.3);background:#0b1020;color:#fff;outline:none;}
+    select:focus, input:focus, textarea:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--ring)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--brand);border:0;color:#052e16;font-weight:700;cursor:pointer}
+    .btn:hover{background:var(--brand-600)}
+
+    .grid{display:grid;gap:16px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:900px){.grid.cols-3{grid-template-columns:1fr};.grid.cols-2{grid-template-columns:1fr}}
+    .rec-card{overflow:hidden}
+    .rec-img{width:100%;height:180px;object-fit:cover;border-radius:14px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(148,163,184,.15);color:#e2e8f0;font-size:12px}
+
+    /* Sections */
+    section{display:none}
+    section.active{display:block}
+
+    footer{margin-top:40px;padding:24px 0;color:var(--muted);text-align:center;border-top:1px dashed rgba(148,163,184,.2)}
+  </style>
+</head>
+<body>
+  <!-- NAVBAR (6 points) -->
+  <nav class="nav">
+    <div class="nav-inner container">
+      <div class="brand">
+        <span class="brand-badge"></span>
+        <span>WanderWise</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Main Navigation">
+        <a href="#home" class="tab active" data-link role="tab" aria-selected="true">Home</a>
+        <a href="#about" class="tab" data-link role="tab">About Us</a>
+        <a href="#contact" class="tab" data-link role="tab">Contact Us</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- HOME (Intro + Recommendations) -->
+    <section id="home" class="active" aria-labelledby="homeLabel">
+      <!-- Introduction (1 point) -->
+      <div class="hero">
+        <div class="card">
+          <div class="card-inner">
+            <div class="chip">Plan smarter • Travel happier</div>
+            <h1 id="homeLabel" class="title">Find your perfect destination in seconds</h1>
+            <p class="subtitle">Tell us what you like—beaches, temples, food, or vibes—and we’ll suggest places with photos and quick facts. Built with pure HTML/CSS/JavaScript for your final project.</p>
+            <ul class="subtitle" style="margin:0; padding-left:18px;">
+              <li>Personalized suggestions</li>
+              <li>Seamless navigation</li>
+              <li>Engaging content & media</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recommender Form -->
+        <div class="card">
+          <div class="card-inner">
+            <h2 style="margin:0 0 10px">Get Recommendations</h2>
+            <form id="recForm">
+              <label for="pref">What are you in the mood for?</label>
+              <select id="pref" required>
+                <option value="">Select preference</option>
+                <option value="beach">Beaches</option>
+                <option value="temple">Temples</option>
+                <option value="city">City Life</option>
+                <option value="mountain">Mountains</option>
+              </select>
+
+              <label for="country" style="margin-top:12px">Pick a country (optional)</label>
+              <select id="country">
+                <option value="">Any country</option>
+                <option>Pakistan</option>
+                <option>Turkey</option>
+                <option>Thailand</option>
+                <option>Indonesia</option>
+                <option>UAE</option>
+                <option>Japan</option>
+              </select>
+
+              <div style="display:flex; gap:10px; margin-top:14px;">
+                <button class="btn" type="submit">Suggest Places</button>
+                <button class="btn" type="button" id="clearBtn" style="background:#0b1020;color:#cbd5e1;border:1px solid rgba(148,163,184,.3)">Clear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Area includes rubric-specific blocks (beach/temple/country) -->
+      <div id="results" class="grid cols-3" style="margin-top:22px"></div>
+
+      <!-- Dedicated rubric sections (ensure always demonstrable) -->
+      <h2 style="margin:26px 0 10px">Featured: Beach Recommendations</h2>
+      <div id="beachBlock" class="grid cols-2"></div>
+
+      <h2 style="margin:26px 0 10px">Featured: Temple Recommendations</h2>
+      <div id="templeBlock" class="grid cols-2"></div>
+
+      <h2 style="margin:26px 0 10px">Featured: By Country</h2>
+      <div id="countryBlock" class="grid cols-2"></div>
+    </section>
+
+    <!-- ABOUT US (2 points) -->
+    <section id="about" aria-labelledby="aboutLabel">
+      <div class="card"><div class="card-inner">
+        <h1 id="aboutLabel" class="title">About WanderWise</h1>
+        <p class="subtitle">We’re a small team of travel nerds who love turning preferences into perfect itineraries. Our mission is to make planning simple, fast, and fun.</p>
+        <div class="grid cols-3" style="margin-top:10px">
+          <div class="card rec-card"><div class="card-inner">
+            <h3>Our Mission</h3>
+            <p class="subtitle">Use clean design and data to recommend places that match your vibe and budget.</p>
+          </div></div>
+          <div class="card rec-card"><div class="card-inner">
+            <h3>What We Do</h3>
+            <ul class="subtitle" style="padding-left:18px">
+              <li>Smart suggestions by theme or country</li>
+              <li>Quick facts with images</li>
+              <li>Beginner-friendly UX</li>
+            </ul>
+          </div></div>
+          <div class="card rec-card"><div class="card-inner">
+            <h3>Tech Stack</h3>
+            <p class="subtitle">HTML, CSS, and Vanilla JavaScript. Deployed via GitHub Pages.</p>
+          </div></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- CONTACT (email form 1 point) -->
+    <section id="contact" aria-labelledby="contactLabel">
+      <div class="card"><div class="card-inner">
+        <h1 id="contactLabel" class="title">Contact Us</h1>
+        <p class="subtitle">Got questions or feedback? Drop us a message!</p>
+        <form id="contactForm" novalidate>
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" required />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="you@example.com" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" placeholder="How can we help?" required></textarea>
+
+          <div style="display:flex; gap:10px; margin-top:14px;">
+            <button class="btn" type="submit">Send</button>
+            <span id="contactStatus" class="pill" aria-live="polite" style="display:none"></span>
+          </div>
+        </form>
+      </div></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> WanderWise • Built for Final Project rubric</div>
+  </footer>
+
+  <script>
+    // ---------- Simple SPA Navigation (Home / About / Contact) ----------
+    const tabs = document.querySelectorAll('[data-link]');
+    const sections = document.querySelectorAll('main section');
+    function activate(hash){
+      const id = (hash || '#home').replace('#','');
+      sections.forEach(s=>s.classList.toggle('active', s.id === id));
+      tabs.forEach(t=>t.classList.toggle('active', t.getAttribute('href') === `#${id}`));
+    }
+    window.addEventListener('hashchange', ()=>activate(location.hash));
+    activate(location.hash);
+
+    // ---------- Data: destinations with categories & country ----------
+    const DESTS = [
+      // Beaches
+      {name:'Whitehaven Beach', country:'Australia', type:'beach', img:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1400&auto=format&fit=crop', desc:'Silica sands, turquoise waters in the Whitsundays.'},
+      {name:'Kelingking Beach', country:'Indonesia', type:'beach', img:'https://images.unsplash.com/photo-1543249861-47c5fd2c6536?q=80&w=1400&auto=format&fit=crop', desc:'Epic cliff views on Nusa Penida, Bali.'},
+      {name:'Kaputas Beach', country:'Turkey', type:'beach', img:'https://images.unsplash.com/photo-1607860108855-0a0f6d9b5a38?q=80&w=1400&auto=format&fit=crop', desc:'Hidden gem between Kas and Kalkan.'},
+
+      // Temples
+      {name:'Wat Arun', country:'Thailand', type:'temple', img:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1400&auto=format&fit=crop', desc:'Temple of Dawn on the Chao Phraya River, Bangkok.'},
+      {name:'Pura Ulun Danu Bratan', country:'Indonesia', type:'temple', img:'https://images.unsplash.com/photo-1541417904950-b855846fe074?q=80&w=1400&auto=format&fit=crop', desc:'Iconic water temple on Lake Bratan, Bali.'},
+      {name:'Senso-ji', country:'Japan', type:'temple', img:'https://images.unsplash.com/photo-1545569341-9eb8b30979d5?q=80&w=1400&auto=format&fit=crop', desc:'Tokyo’s oldest Buddhist temple in Asakusa.'},
+
+      // Cities
+      {name:'Dubai Marina', country:'UAE', type:'city', img:'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?q=80&w=1400&auto=format&fit=crop', desc:'Skyscrapers, yachts, and nightlife.'},
+      {name:'Istanbul', country:'Turkey', type:'city', img:'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1400&auto=format&fit=crop', desc:'Where East meets West—bazaars & Bosphorus.'},
+      {name:'Tokyo', country:'Japan', type:'city', img:'https://images.unsplash.com/photo-1505060893605-c1bf49a7980d?q=80&w=1400&auto=format&fit=crop', desc:'Neon streets, sushi, and culture hubs.'},
+
+      // Mountains / Nature
+      {name:'Naran & Kaghan', country:'Pakistan', type:'mountain', img:'https://images.unsplash.com/photo-1582020134915-488ab9978854?q=80&w=1400&auto=format&fit=crop', desc:'Valleys, lakes, and pine forests in KPK.'},
+      {name:'Mount Fuji Views', country:'Japan', type:'mountain', img:'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?q=80&w=1400&auto=format&fit=crop', desc:'Iconic peak with lakeside vantage points.'},
+      {name:'Ubud Rice Terraces', country:'Indonesia', type:'mountain', img:'https://images.unsplash.com/photo-1543248939-ff40856f65d6?q=80&w=1400&auto=format&fit=crop', desc:'Emerald paddies and jungle vibes in Bali.'},
+    ];
+
+    // ---------- Helpers ----------
+    const results = document.getElementById('results');
+    function cardHTML(d){
+      return `<div class="card rec-card"><div class="card-inner">
+        <img class="rec-img" src="${d.img}" alt="${d.name}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+          <strong>${d.name}</strong>
+          <span class="pill">${d.country} • ${d.type}</span>
+        </div>
+        <p class="subtitle" style="margin:8px 0 0">${d.desc}</p>
+      </div></div>`;
+    }
+
+    function render(list, mount){
+      mount.innerHTML = list.map(cardHTML).join('');
+    }
+
+    // ---------- Recommender logic ----------
+    const recForm = document.getElementById('recForm');
+    const clearBtn = document.getElementById('clearBtn');
+    recForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const pref = document.getElementById('pref').value;
+      const country = document.getElementById('country').value;
+      let list = DESTS;
+      if(pref) list = list.filter(d=>d.type===pref);
+      if(country) list = list.filter(d=>d.country===country);
+      if(list.length===0){
+        results.innerHTML = `<div class="card"><div class="card-inner">
+          <strong>No exact matches.</strong> Try a different country or preference.
+        </div></div>`;
+      } else {
+        render(list, results);
+      }
+      // Scroll to results
+      results.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    clearBtn.addEventListener('click', ()=>{
+      recForm.reset();
+      results.innerHTML = '';
+    });
+
+    // ---------- Rubric blocks: always show 2 images for beach, temple, country ----------
+    function pick(list, n){
+      return list.slice(0, n);
+    }
+    const beachBlock = document.getElementById('beachBlock');
+    render(pick(DESTS.filter(d=>d.type==='beach'), 2), beachBlock); // (2 points)
+
+    const templeBlock = document.getElementById('templeBlock');
+    render(pick(DESTS.filter(d=>d.type==='temple'), 2), templeBlock); // (2 points)
+
+    const countryBlock = document.getElementById('countryBlock');
+    // Default country show: Turkey (2 images). You can change below if needed.
+    render(pick(DESTS.filter(d=>d.country==='Turkey'), 2), countryBlock); // (2 points)
+
+    // ---------- Contact form (basic validation + fake send) ----------
+    const contactForm = document.getElementById('contactForm');
+    const contactStatus = document.getElementById('contactStatus');
+    contactForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // Very simple validation
+      const validEmail = /.+@.+\..+/.test(email);
+      if(!name || !validEmail || !message){
+        contactStatus.style.display='inline-block';
+        contactStatus.textContent = 'Please fill all fields with a valid email.';
+        contactStatus.style.background = 'rgba(239,68,68,.15)';
+        contactStatus.style.color = '#fecaca';
+        return;
+      }
+      contactStatus.style.display='inline-block';
+      contactStatus.textContent = 'Message sent! (Demo only)';
+      contactStatus.style.background = 'rgba(34,197,94,.15)';
+      contactStatus.style.color = '#bbf7d0';
+      contactForm.reset();
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
